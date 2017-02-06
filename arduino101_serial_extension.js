@@ -56,9 +56,15 @@
     analogInputData = new Uint8Array(6),
     accelInputData = [0,0],
     imuEventData = new Uint8Array(3),
-    servoVals = new Uint8Array(12);
+    servoVals = [],
+    servoSpeed = new Uint8Array(12);
 
   var device = null;
+
+  for (var i=0; i<12; i++) {
+    servoVals[i] = 'left';
+    servoSpeed[i] = 50;
+  }
 
   function analogRead(aPin) {
     var pin = -1;
@@ -256,10 +262,54 @@
     }
   };
 
-  ext.rotateServo = function(pin, deg) {
-    if (deg < 0) deg = 0;
-    else if (deg > 180) deg = 180;
-    rotateServo(pin, deg);
+  function getScaledSpeed(pin) {
+    var speed = servoSpeed[pin];
+    var scaledSpeed = Math.round(map(speed, 0, 100, 0, 90));
+    if (scaledSpeed > 90) scaledSpeed = 90;
+    else if (scaledSpeed < 0) scaledSpeed = 0;
+    return scaledSpeed;
+  };
+
+  ext.rotateServo = function(pin, dir) {
+    console.log(dir);
+    if (dir === 'left') {
+      //if (DIGITAL_PINS.indexOf(parseInt(pin)) === -1) return;
+      device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90+getScaledSpeed(pin))]).buffer);
+    } else if (dir === 'right') {
+      device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90-getScaledSpeed(pin))]).buffer);
+    }
+    servoVals[pin] = dir;
+    console.log(servoVals[pin]);
+  };
+
+  ext.setServo = function(pin, state) {
+    if (state === 'on') {
+      if (servoVals[pin] === 'left') {
+        //if (DIGITAL_PINS.indexOf(parseInt(pin)) === -1) return;
+        device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90+getScaledSpeed(pin))]).buffer);
+      } else if (servoVals[pin] === 'right') {
+        device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90-getScaledSpeed(pin))]).buffer);
+      }
+    } else {
+        device.send(new Uint8Array([CMD_SERVO_WRITE, pin, 90]).buffer);
+    }
+  };
+
+  ext.setServoSpeed = function(pin, speed) {
+    speed = parseInt(speed);
+    if (isNaN(speed)) return;
+    if (speed > 100) speed = 100;
+    else if (speed < 0) speed = 0;
+    servoSpeed[pin] = speed;
+
+    if (servoVals[pin] === 'left') {
+      console.log(90+getScaledSpeed(pin));
+      //if (DIGITAL_PINS.indexOf(parseInt(pin)) === -1) return;
+      device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90+getScaledSpeed(pin))]).buffer);
+    } else if (servoVals[pin] === 'right') {
+      console.log(90-getScaledSpeed(pin));
+      device.send(new Uint8Array([CMD_SERVO_WRITE, pin, (90-getScaledSpeed(pin))]).buffer);
+    }
   };
 
   ext.servoPosition = function(pin) {
@@ -318,8 +368,9 @@
     ['h', 'when shaken', 'whenIMUEvent'],
     ['r', 'tilt angle %m.tiltDir', 'getTilt', 'up'],
     ['-'],
-    [' ', 'set pin %d.digitalOutputs servo to %n degrees', 'rotateServo', 7, 90],
-    ['r', 'pin %d.digitalOutputs servo position', 'servoPosition', 7]
+    [' ', 'turn servo %d.digitalOutputs %m.dir', 'rotateServo', 3, 'left'],
+    [' ', 'turn servo %d.digitalOutputs %m.outputs', 'setServo', 3, 'on'],
+    [' ', 'set servo %d.digitalOuputs speed to %n', 'setServoSpeed', 3, 100]
   ];
 
   var menus = {
@@ -329,7 +380,8 @@
     analogInputs: ANALOG_PINS,
     outputs: ['on', 'off'],
     ops: ['>', '=', '<'],
-    tiltDir: ['up', 'down', 'left', 'right']
+    tiltDir: ['up', 'down', 'left', 'right'],
+    dir: ['left', 'right']
   };
 
   var descriptor = {
