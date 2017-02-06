@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Arduino 101 Scratch Extension</title>
+<link rel="stylesheet" type="text/css" href="style.css"></link>
+<meta charset="utf-8" />
+</head>
+<body>
+
+<div id="header-container">
+  <header>
+    <h1>Arduino 101 Scratch Extension</h1>
+    <ul>
+      <li><a href="index.html">About</a></li>
+      <li><a class="selected" href="gettingstarted.html">Getting Started</a></li>
+      <li><a href="blocks.html">Blocks</a></li>
+      <li><a href="examples.html">Examples</a></li>
+    </ul>
+  </header>
+</div>
+
+<div id="content-container">
+
+  <a name="getting-started" />
+  <h1>Getting Started</h1>
+
+  <h3>Upload the firmware to the Arduino board</h3>
+  <p>The board will remember the firmware so you will only have to complete this step once.</p>
+  <ol>
+    <li>If you haven't already, download and install the <a href="http://www.arduino.cc/en/Main/Software">Arduino IDE</a> <span class="small-text">(<a href="http://www.arduino.cc/en/Guide/Windows">Windows</a> or <a href="http://www.arduino.cc/en/Guide/MacOSX">Mac</a> instructions)</span></li>
+    <li>Connect the Arduino/Genuino 101 board to your computer's USB port</li>
+    <li>Launch the Arduino IDE<br /><img src="img/arduino.png" /></li>
+    <li>Click on the <b>Tools</b> menu and select <b>Board &gt; Boards Manager...</b><br /><img src="img/arduino-board.png" width=700 /></li>
+    <li>Search for "curie" and install the <b>Intel Curie Boards</b> by <b>Intel</b>. Close the Boards Manager once the installation is complete.<br /><img src="img/arduino-board-manager.png" width=700 /></li>
+    <li>Download the <a href="https://llk.github.io/arduino-101/arduino101-firmware/arduino101-firmware.ino">custom Arduino 101 firmware</a> and open it in the Arduino IDE</li>
+    <li>Select <b>Arduino/Genuino 101</b> under the <b>Tools > Board</b> menu<br /><img src="img/arduino-board-101.png" width=300 /></li>
+    <li>Select the correct serial port under the <b>Tools &gt; Port</b> menu.<br />On Mac, it's something like <b>/dev/cu.usbmodemXXXXX</b>.<br />On Windows, it's probably the highest-numbered COM port.<br />(Or unplug the Arduino, check the menu, and then replug your Arduino and see what new port appears.)<br /><img src="img/arduino-port.png" /></li>
+    <li>Click the upload button<br /><img src="img/arduino-upload.png" width=300 /></li>
+  </ol>
+
+  <h3>Install the Scratch Extensions Browser Plugin</h3>
+  <p>You will need to use the <a href="http://firefox.com/">Firefox</a> web browser for this extension.</p>
+  <p>Download and install the <a href="https://scratch.mit.edu/info/ext_download/">Scratch Extensions Browser Plugin</a> for "other web browsers"</p>
+  <p>You will need to quit and relaunch Firefox after installing the plugin</p>
+
+  <h3>Load the Arduino extension on ScratchX</h3>
+
+  <p>Launch the extension by going to the following URL:</p>
+  <a target="_new" href="http://scratchx.org/?url=https://llk.github.io/arduino-101/arduino101_serial_extension.js ">http://scratchx.org/?url=https://llk.github.io/arduino-101/arduino101_serial_extension.js</a>
+
+  <p><b>NOTE:</b> You might see "Allow scratchx.org to run "Scratch Device?". Click "Allow...".</p>
+  <p><img src="img/firefox-plugin.png" width=600 /></p>
+  <p>You might see another message, "Allow scratchx.org to run plugins?". Set both Adobe Flash and Scratch Device to "Allow and Remember" and click OK.</p>
+  <p><img src="img/firefox-plugin2.png" /></p>
+
+  <h3>Wait for the green light</h3>
+
+  <p>When you see the indicator light in the "More Blocks" tab turn green your ready to start using the extension!</p>
+  <img width=300 src="img/connected.png" alt="Green indicator light" />
+  <p>Now take a look at the <a href="blocks.html">Scratch Blocks</a> and the <a href="examples.html">example projects</a> to learn how to use the extension.
+
+</div>
+
+<br />
+
+</body>
+</html>
